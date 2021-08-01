@@ -4,9 +4,10 @@ console.log("Sup boi")// variable for the namespace
 // CONFIGURABLE CONSTANTS
 //////////////////////////////////////
 
-const width = 80;
-const height = 90;
-const targets = 6;
+const octagonWidth = 100;
+const diamondWidth = 26;
+const separation = 20;
+const numDiamonds = 6;
 
 //////////////////////////////////////
 // SET UP THE SVG CANVAS
@@ -18,25 +19,30 @@ const xlinkns = "http://www.w3.org/1999/xlink";
 const svg = document.querySelector("svg");
 
 // figure the new svg width/height
-const svgWidth = width * targets;
-const svgHeight = height;
-
+const svgWidth = diamondWidth*2 + (octagonWidth + separation) * (numDiamonds-1);
+const svgHeight = svgWidth;
 
 //////////////////////////////////////
 // Create the basic shapes we will be transforming
 //////////////////////////////////////
 
-let baseRect = document.createElementNS(svgns, "rect");
-baseRect.setAttribute("id", "baseRect");
-baseRect.setAttribute("x", 0);
-baseRect.setAttribute("y", 0);
-baseRect.setAttribute("width", width);
-baseRect.setAttribute("height", height);
-baseRect.setAttribute("fill", "none");
-baseRect.setAttribute("stroke", "black");
+let baseOct = document.createElementNS(svgns, "rect");
+baseOct.setAttribute("id", "baseOct");
+baseOct.setAttribute("x", 0);
+baseOct.setAttribute("y", 0);
+baseOct.setAttribute("width", octagonWidth);
+baseOct.setAttribute("height", octagonWidth);
+baseOct.setAttribute("fill", "none");
+baseOct.setAttribute("stroke", "black");
 
-// gsap.set(baseRect, {
-//           id: "baseRect",
+let baseDia = document.createElementNS(svgns, "polygon");
+baseDia.setAttribute("id", "baseDia");
+baseDia.setAttribute("points", "-" + diamondWidth + ",0 0," + diamondWidth + " " + diamondWidth +",0 0,-" + diamondWidth);
+baseDia.setAttribute("fill", "none");
+baseDia.setAttribute("stroke", "black");
+
+// gsap.set(baseOct, {
+//           id: "baseOct",
 //           x: 0,
 //           y: 0,
 //           width: 1,
@@ -45,7 +51,7 @@ baseRect.setAttribute("stroke", "black");
 //           stroke: "black"
 //       });
 
-console.log(baseRect);
+console.log(baseOct);
 
 // Dynamically alter the svg
 gsap.set(svg, {
@@ -58,7 +64,8 @@ gsap.set(svg, {
 });
 
 const defs = document.querySelector("defs");
-defs.appendChild(baseRect);
+defs.appendChild(baseOct);
+defs.appendChild(baseDia);
 
 //////////////////////////////////////
 // Helper functions
@@ -80,9 +87,26 @@ function addElement(name, x, y) {
 // Draw the image by referencing and transforming the basic shapes
 //////////////////////////////////////
 
-for (let i = 0; i < targets; i++) {
-    let newRect = addElement("baseRect", i*width, 0)
-    svg.appendChild(newRect);
+const s = separation / 2;
+
+for (let j = 0; j < numDiamonds; j++) {
+    for (let i = 0; i < numDiamonds; i++) {
+        let newDia = addElement(
+            "baseDia",
+            diamondWidth + i*(octagonWidth + separation),
+            diamondWidth + j*(octagonWidth + separation)
+        )
+        svg.appendChild(newDia);
+
+        if (i+1 < numDiamonds && j+1 < numDiamonds) {
+            let newOct = addElement(
+                "baseOct",
+                diamondWidth + s + i*(octagonWidth + separation),
+                diamondWidth + s + j*(octagonWidth + separation)
+            )
+            svg.appendChild(newOct);
+        }
+    }
 }
 
 // // make a simple rectangle
