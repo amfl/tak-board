@@ -4,10 +4,10 @@ console.log("Sup boi")// variable for the namespace
 // CONFIGURABLE CONSTANTS
 //////////////////////////////////////
 
-const octagonWidth = 100;
-const diamondWidth = 16;
-const separation = 10;
-const numDiamonds = 6;
+const squareWidth = 100; // Width of a "square", not including any separation
+const numSquares = 5; // Defines the dimensions of the entire board
+const diamondRadius = 20;
+const separation = 8;
 
 //////////////////////////////////////
 // SET UP THE SVG CANVAS
@@ -19,7 +19,7 @@ const xlinkns = "http://www.w3.org/1999/xlink";
 const svg = document.querySelector("svg");
 
 // figure the new svg width/height
-const svgWidth = diamondWidth*2 + (octagonWidth + separation) * (numDiamonds-1);
+const svgWidth = diamondRadius*2 + squareWidth*numSquares;
 const svgHeight = svgWidth;
 
 //////////////////////////////////////
@@ -27,17 +27,18 @@ const svgHeight = svgWidth;
 //////////////////////////////////////
 
 let baseOct = document.createElementNS(svgns, "polygon");
-const a = diamondWidth * Math.SQRT2; // Tbh I guessed this... It's probably right
-const w = octagonWidth/2;
-const path = "-a,w a,w w,a w,-a a,-w -a,-w -w,-a -w,a".replaceAll("a", a).replaceAll("w", w)
-baseOct.setAttribute("points", path);
+const a = (squareWidth/2) - diamondRadius - separation;
+const w = (squareWidth - separation)/2;
+const octPoints = "-a,w a,w w,a w,-a a,-w -a,-w -w,-a -w,a".replaceAll("a", a).replaceAll("w", w)
+baseOct.setAttribute("points", octPoints);
 baseOct.setAttribute("id", "baseOct");
 baseOct.setAttribute("fill", "none");
 baseOct.setAttribute("stroke", "black");
 
 let baseDia = document.createElementNS(svgns, "polygon");
 baseDia.setAttribute("id", "baseDia");
-baseDia.setAttribute("points", "-" + diamondWidth + ",0 0," + diamondWidth + " " + diamondWidth +",0 0,-" + diamondWidth);
+const diamondPoints = "-r,0 0,r r,0 0,-r".replaceAll("r", diamondRadius);
+baseDia.setAttribute("points", diamondPoints);
 baseDia.setAttribute("fill", "none");
 baseDia.setAttribute("stroke", "black");
 
@@ -48,8 +49,8 @@ gsap.set(svg, {
     attr: {
           width: svgWidth,
           height: svgHeight,
-          viewBox: "0 0 " + svgWidth + " " + svgHeight,
-          style: "background-color: #333;"
+          viewBox: "0 0 " + svgWidth + " " + svgHeight
+          // style: "background-color: #333;"
     },
 });
 
@@ -79,20 +80,20 @@ function addElement(name, x, y) {
 
 const s = separation / 2;
 
-for (let j = 0; j < numDiamonds; j++) {
-    for (let i = 0; i < numDiamonds; i++) {
+for (let j = 0; j <= numSquares; j++) {
+    for (let i = 0; i <= numSquares; i++) {
         let newDia = addElement(
             "baseDia",
-            diamondWidth + i*(octagonWidth + separation),
-            diamondWidth + j*(octagonWidth + separation)
+            diamondRadius + i*squareWidth,
+            diamondRadius + j*squareWidth
         )
         svg.appendChild(newDia);
 
-        if (i+1 < numDiamonds && j+1 < numDiamonds) {
+        if (i < numSquares && j < numSquares) {
             let newOct = addElement(
                 "baseOct",
-                diamondWidth + s + octagonWidth/2 + i*(octagonWidth + separation),
-                diamondWidth + s + octagonWidth/2 + j*(octagonWidth + separation)
+                diamondRadius + squareWidth/2 + i*squareWidth,
+                diamondRadius + squareWidth/2 + j*squareWidth
             )
             svg.appendChild(newOct);
         }
