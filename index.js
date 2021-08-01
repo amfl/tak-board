@@ -23,10 +23,10 @@ gsap.set(svg, {
     }
 });
 
-for (let i = 0; i < targets; i++) {
+function createRect() {
     let newRect = document.createElementNS(svgns, "rect");
     gsap.set(newRect, {
-              x: i * width,
+              x: 0,
               y: 0,
               width: width * 0.9,
               height: height * 0.9,
@@ -34,6 +34,14 @@ for (let i = 0; i < targets; i++) {
               fill: "none",
               stroke: "black"
           });
+    return newRect
+}
+for (let i = 0; i < targets; i++) {
+    let newRect = createRect();
+    gsap.set(newRect, {
+        // Slide shape along
+        x: "+=" + i*width
+    })
     svg.appendChild(newRect);
 }
 
