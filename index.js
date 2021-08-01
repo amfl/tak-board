@@ -1,11 +1,9 @@
-console.log("Sup boi")// variable for the namespace 
-
 //////////////////////////////////////
 // CONFIGURABLE CONSTANTS
 //////////////////////////////////////
 
 const squareWidth = 100;   // Width of a "square", not including any separation
-const numSquares = 5;      // Defines the dimensions of the entire board
+const numSquares = 4;      // Defines the dimensions of the entire board
 const diamondRadius = 20;  // How wide the diamonds are
 const separation = 8;      // Separation between diamonds and octagons
 
@@ -25,9 +23,11 @@ const svg = document.querySelector("svg");
 // plus half a diamond on each side.
 const svgDimensions = diamondRadius*2 + squareWidth*numSquares;
 
-// Dynamically alter the svg canvas size
-svg.setAttribute("width", svgDimensions);
-svg.setAttribute("height", svgDimensions);
+// Dynamically alter the svg canvas size on-screen and on-paper
+// svg.setAttribute("width", svgDimensions);
+// svg.setAttribute("height", svgDimensions);
+
+// Alter the viewport so the browser can see the whole thing
 svg.setAttribute("viewBox", "0 0 " + svgDimensions + " " + svgDimensions);
 
 //////////////////////////////////////
@@ -61,6 +61,10 @@ defs.appendChild(baseDia);
 // Helper functions
 //////////////////////////////////////
 
+/**
+ * Create an element with its own transform group so we can move it around on
+ * the svg.
+ */
 function createElement(name, x, y) {
     var g   = document.createElementNS(svgns, "g"),
         use = document.createElementNS(svgns, "use"),
@@ -78,22 +82,29 @@ function createElement(name, x, y) {
 // Draw the board by referencing and transforming the basic shapes
 //////////////////////////////////////
 
-for (let j = 0; j <= numSquares; j++) {
-    for (let i = 0; i <= numSquares; i++) {
-        let newDia = createElement(
-            "baseDia",
-            diamondRadius + i*squareWidth,
-            diamondRadius + j*squareWidth
-        )
-        svg.appendChild(newDia);
+function main() {
+    for (let j = 0; j <= numSquares; j++) {
+        for (let i = 0; i <= numSquares; i++) {
 
-        if (i < numSquares && j < numSquares) {
-            let newOct = createElement(
-                "baseOct",
-                diamondRadius + squareWidth/2 + i*squareWidth,
-                diamondRadius + squareWidth/2 + j*squareWidth
+            // Drop a diamond at each corner
+            let newDia = createElement(
+                "baseDia",
+                diamondRadius + i*squareWidth,
+                diamondRadius + j*squareWidth
             )
-            svg.appendChild(newOct);
+            svg.appendChild(newDia);
+
+            // Draw an octogon if we're not at the very edge of the board
+            if (i < numSquares && j < numSquares) {
+                let newOct = createElement(
+                    "baseOct",
+                    diamondRadius + squareWidth/2 + i*squareWidth,
+                    diamondRadius + squareWidth/2 + j*squareWidth
+                )
+                svg.appendChild(newOct);
+            }
         }
     }
 }
+
+main();
