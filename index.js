@@ -6,7 +6,7 @@ console.log("Sup boi")// variable for the namespace
 
 const octagonWidth = 100;
 const diamondWidth = 26;
-const separation = 20;
+const separation = 10;
 const numDiamonds = 6;
 
 //////////////////////////////////////
@@ -26,12 +26,21 @@ const svgHeight = svgWidth;
 // Create the basic shapes we will be transforming
 //////////////////////////////////////
 
-let baseOct = document.createElementNS(svgns, "rect");
+// let baseOct = document.createElementNS(svgns, "rect");
+// baseOct.setAttribute("id", "baseOct");
+// baseOct.setAttribute("x", 0);
+// baseOct.setAttribute("y", 0);
+// baseOct.setAttribute("width", octagonWidth);
+// baseOct.setAttribute("height", octagonWidth);
+// baseOct.setAttribute("fill", "none");
+// baseOct.setAttribute("stroke", "black");
+
+let baseOct = document.createElementNS(svgns, "polygon");
+const a = diamondWidth * Math.SQRT1_2; // Tbh I guessed this... It's probably right
+const w = octagonWidth/2;
+const path = "-a,w a,w w,a w,-a a,-w -a,-w -w,-a -w,a".replaceAll("a", a).replaceAll("w", w)
+baseOct.setAttribute("points", path);
 baseOct.setAttribute("id", "baseOct");
-baseOct.setAttribute("x", 0);
-baseOct.setAttribute("y", 0);
-baseOct.setAttribute("width", octagonWidth);
-baseOct.setAttribute("height", octagonWidth);
 baseOct.setAttribute("fill", "none");
 baseOct.setAttribute("stroke", "black");
 
@@ -101,8 +110,8 @@ for (let j = 0; j < numDiamonds; j++) {
         if (i+1 < numDiamonds && j+1 < numDiamonds) {
             let newOct = addElement(
                 "baseOct",
-                diamondWidth + s + i*(octagonWidth + separation),
-                diamondWidth + s + j*(octagonWidth + separation)
+                diamondWidth + s + octagonWidth/2 + i*(octagonWidth + separation),
+                diamondWidth + s + octagonWidth/2 + j*(octagonWidth + separation)
             )
             svg.appendChild(newOct);
         }
