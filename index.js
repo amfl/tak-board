@@ -1,17 +1,51 @@
 console.log("Sup boi")// variable for the namespace 
 
+//////////////////////////////////////
+// CONFIGURABLE CONSTANTS
+//////////////////////////////////////
+
+const width = 80;
+const height = 90;
+const targets = 6;
+
+//////////////////////////////////////
+// SET UP THE SVG CANVAS
+//////////////////////////////////////
+
 const svgns = "http://www.w3.org/2000/svg";
+const xlinkns = "http://www.w3.org/1999/xlink";
 
-// change any value
-let width = 80;
-let height = 90;
-let targets = 6;
-
-// targeting the svg itself
 const svg = document.querySelector("svg");
+
 // figure the new svg width/height
 const svgWidth = width * targets;
 const svgHeight = height;
+
+
+//////////////////////////////////////
+// Create the basic shapes we will be transforming
+//////////////////////////////////////
+
+let baseRect = document.createElementNS(svgns, "rect");
+baseRect.setAttribute("id", "baseRect");
+baseRect.setAttribute("x", 0);
+baseRect.setAttribute("y", 0);
+baseRect.setAttribute("width", width);
+baseRect.setAttribute("height", height);
+baseRect.setAttribute("fill", "none");
+baseRect.setAttribute("stroke", "black");
+
+// gsap.set(baseRect, {
+//           id: "baseRect",
+//           x: 0,
+//           y: 0,
+//           width: 1,
+//           height: 1,
+//           fill: "none",
+//           stroke: "black"
+//       });
+
+console.log(baseRect);
 
 // Dynamically alter the svg
 gsap.set(svg, {
@@ -20,28 +54,34 @@ gsap.set(svg, {
           height: svgHeight,
           viewBox: "0 0 " + svgWidth + " " + svgHeight,
           style: "background-color: #333;"
-    }
+    },
 });
 
-function createRect() {
-    let newRect = document.createElementNS(svgns, "rect");
-    gsap.set(newRect, {
-              x: 0,
-              y: 0,
-              width: width * 0.9,
-              height: height * 0.9,
-              // fill: "#5cceee",
-              fill: "none",
-              stroke: "black"
-          });
-    return newRect
+const defs = document.querySelector("defs");
+defs.appendChild(baseRect);
+
+//////////////////////////////////////
+// Helper functions
+//////////////////////////////////////
+
+function addElement(name, x, y) {
+    var g   = document.createElementNS(svgns, "g"),
+        use = document.createElementNS(svgns, "use"),
+        t   = 'translate(' + x + ',' + y + ') ' +
+              'scale(' + 1 + ')';
+    use.setAttributeNS(null, "class", name);
+    use.setAttributeNS(xlinkns, "xlink:href", "#" + name);
+    g.setAttributeNS(null, "transform", t);
+    g.appendChild(use);
+    return g
 }
+
+//////////////////////////////////////
+// Draw the image by referencing and transforming the basic shapes
+//////////////////////////////////////
+
 for (let i = 0; i < targets; i++) {
-    let newRect = createRect();
-    gsap.set(newRect, {
-        // Slide shape along
-        x: "+=" + i*width
-    })
+    let newRect = addElement("baseRect", i*width, 0)
     svg.appendChild(newRect);
 }
 
