@@ -79,10 +79,18 @@ function createElement(name, x, y) {
 }
 
 //////////////////////////////////////
-// Draw the board by referencing and transforming the basic shapes
+// Aruco Stuff
 //////////////////////////////////////
 
+function populateAruco() {
+    let marker = new ArucoMarker(123);
+    let marker_div = document.getElementById("marker");
+    marker_div.innerHTML = marker.toSVG();
+    console.log("Done with aruco");
+}
+
 function main() {
+    // Draw the board by referencing and transforming the basic shapes
     for (let j = 0; j <= numSquares; j++) {
         for (let i = 0; i <= numSquares; i++) {
 
@@ -105,6 +113,9 @@ function main() {
             }
         }
     }
+
+    // Slap an aruco marker on there
+    populateAruco();
 }
 
 main();
