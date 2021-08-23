@@ -3,7 +3,7 @@
 //////////////////////////////////////
 
 const squareWidth = 100;   // Width of a "square", not including any separation
-const numSquares = 4;      // Defines the dimensions of the entire board
+const numSquares = 5;      // Defines the dimensions of the entire board
 const diamondRadius = 20;  // How wide the diamonds are
 const separation = 8;      // Separation between diamonds and octagons
 
@@ -49,7 +49,7 @@ let baseDia = document.createElementNS(svgns, "polygon");
 baseDia.setAttribute("id", "baseDia");
 const diamondPoints = "-r,0 0,r r,0 0,-r".replaceAll("r", diamondRadius);
 baseDia.setAttribute("points", diamondPoints);
-baseDia.setAttribute("fill", "none");
+baseDia.setAttribute("fill", "#999");
 baseDia.setAttribute("stroke", "black");
 
 // Append these basic shapes into the SVG defs section so we can refer to them later.
@@ -83,9 +83,19 @@ function createElement(name, x, y) {
 //////////////////////////////////////
 
 function populateAruco() {
-    let marker = new ArucoMarker(123);
-    let marker_div = document.getElementById("marker");
-    marker_div.innerHTML = marker.toSVG();
+    function randInt(n) {
+        return Math.floor(Math.random() * n)
+    }
+    function populateArucoStrip(elem, num) {
+        for (let i=0; i<num; ++i) {
+            let marker = new ArucoMarker(randInt(128));
+            elem.innerHTML = elem.innerHTML + marker.toSVG();
+        }
+    }
+    let numAruco = 6;
+    populateArucoStrip(document.getElementById("markerstrip1"), numAruco);
+    populateArucoStrip(document.getElementById("markerstrip2"), numAruco);
+
     console.log("Done with aruco");
 }
 

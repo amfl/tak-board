@@ -1,0 +1,13 @@
+.markerstrip {
+    width: 2.5cm;
+    float:left;
+}
+.markerstrip svg {
+    margin-bottom: 0.3cm;
+}
+#gameboard {
+    float:left;
+    margin: 0 1cm;
+    width: 17cm;
+    height: 17cm;
+}
