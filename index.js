@@ -54,15 +54,13 @@ defs.appendChild(baseCard);
  * Create an element with its own transform group so we can move it around on
  * the svg.
  */
-function createElement(name, x, y) {
+function createElement(name, transform) {
     var g   = document.createElementNS(svgns, "g"),
-        use = document.createElementNS(svgns, "use"),
-        t   = 'translate(' + x + ',' + y + ') ' +
-              'scale(' + 1 + ')';
+        use = document.createElementNS(svgns, "use");
     use.setAttributeNS(null, "class", name);
     // Refer to one of the base shapes we made earlier
     use.setAttributeNS(xlinkns, "xlink:href", "#" + name);
-    g.setAttributeNS(null, "transform", t);
+    g.setAttributeNS(null, "transform", transform);
     g.appendChild(use);
     return g
 }
@@ -71,20 +69,41 @@ function createElement(name, x, y) {
 // Draw the board by referencing and transforming the basic shapes
 //////////////////////////////////////
 
-function main() {
-    // TODO: Have some generator which produces card transformations to fit
-    // them on a page.
-    for (let j = 0; j <= 2; j++) {
-        for (let i = 0; i <= 3; i++) {
+/// Return a transform string to place this card on the page. Don't know if
+/// this is going to be hard-coded to bridge size on A4 forever yet...
+function cardPositionGenerator(index) {
+    const max_cards_on_page = 11;
+    const num_landscape_cards = 6;
 
-            // Drop a diamond at each corner
-            let newCard = createElement(
-                "baseCard",
-                i*cardDimensionsMm[0],
-                j*cardDimensionsMm[1]
-            )
-            svg.appendChild(newCard);
-        }
+    // We don't do anything with page yet. All the pages draw over each other :D
+    const page = Math.floor(index / max_cards_on_page);
+    // The i-th card on this page
+    let i = index % max_cards_on_page;
+
+    let transform = ''; // The transform we're going to return
+    if (i < num_landscape_cards) { // The six landscape cards
+        const x = cardDimensionsMm[0] * (i%2);
+        const y = cardDimensionsMm[1] * Math.floor(i/2);
+        transform += 'translate(' + x + ',' + y + ') '
+    } else { // The remaining landscape cards
+        i -= num_landscape_cards;
+        // Order does matter here...
+        transform += 'translate(' + cardDimensionsMm[0]*2 + ', ' + cardDimensionsMm[0]*(i+1) + ') ';
+        transform += 'rotate(-90) ';
+    }
+
+    return transform
+}
+
+function main() {
+    const max_cards = 11;
+    for (let num = 0; num < max_cards; ++num) {
+
+        let newCard = createElement(
+            "baseCard",
+            cardPositionGenerator(num)
+        )
+        svg.appendChild(newCard);
     }
 }
 
