@@ -65,6 +65,25 @@ function createElement(name, transform) {
     return g
 }
 
+function createCard(index, transform) {
+    // Start off with a base card
+    let newCard = createElement(
+        "baseCard",
+        cardPositionGenerator(index)
+    )
+
+    // Add stuff specific to this card
+    var text = document.createElementNS(svgns, "text");
+    text.setAttribute("x", "0");
+    text.setAttribute("y", "10");
+    text.setAttribute("fill", "black");
+    text.setAttribute("font-family", "monospace");
+    text.innerHTML="card " + index;
+    newCard.appendChild(text);
+
+    return newCard;
+}
+
 //////////////////////////////////////
 // Draw the board by referencing and transforming the basic shapes
 //////////////////////////////////////
@@ -99,8 +118,8 @@ function main() {
     const max_cards = 11;
     for (let num = 0; num < max_cards; ++num) {
 
-        let newCard = createElement(
-            "baseCard",
+        let newCard = createCard(
+            num,
             cardPositionGenerator(num)
         )
         svg.appendChild(newCard);
