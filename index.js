@@ -72,14 +72,33 @@ function createCard(index, transform) {
         cardPositionGenerator(index)
     )
 
+    // Describe the set of all cards
+    // const pips = ['♠','♥','♦','♣'];
+    const pips = ['♠','♦','♣'];
+    const max_rank = 5;
+
+    // Determine what goes on this specific card
+    const pip_index = Math.floor(index / max_rank);
+    const rank_index = index % max_rank;
+
     // Add stuff specific to this card
     var text = document.createElementNS(svgns, "text");
     text.setAttribute("x", "0");
-    text.setAttribute("y", "10");
+    text.setAttribute("y", "20");
     text.setAttribute("fill", "black");
     text.setAttribute("font-family", "monospace");
-    text.innerHTML="card " + index;
+    text.setAttribute("font-size", "200%");
+    text.innerHTML=rank_index;
     newCard.appendChild(text);
+
+    var pip = document.createElementNS(svgns, "text");
+    pip.setAttribute("x", cardDimensionsMm[0]/3);
+    pip.setAttribute("y", 2*cardDimensionsMm[1]/3);
+    pip.setAttribute("fill", "black");
+    pip.setAttribute("font-size", "400%");
+    pip.setAttribute("font-family", "monospace");
+    pip.innerHTML=pips[pip_index % pips.length];
+    newCard.appendChild(pip);
 
     return newCard;
 }
