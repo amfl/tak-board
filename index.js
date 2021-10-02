@@ -102,6 +102,16 @@ function createCard(index, transform) {
     pip.innerHTML=pips[pip_index % pips.length];
     newCard.appendChild(pip);
 
+    var svgindex = document.createElementNS(svgns, "text");
+    svgindex.setAttribute("text-anchor", "middle");
+    svgindex.setAttribute("x", cardDimensionsMm[0]/2);
+    svgindex.setAttribute("y", "10");
+    svgindex.setAttribute("fill", "black");
+    svgindex.setAttribute("font-family", "monospace");
+    svgindex.setAttribute("font-size", "50%");
+    svgindex.innerHTML=index+1;
+    newCard.appendChild(svgindex);
+
     return newCard;
 }
 
