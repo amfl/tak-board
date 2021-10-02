@@ -65,7 +65,13 @@ function createElement(name, transform) {
     return g
 }
 
-function createCard(index, transform) {
+/**
+ * Create a card from the Mystique Deck.
+ * https://boardgamegeek.com/boardgame/141291/mystique-deck
+ * Args:
+ *   mystique_index: Each card in the mystique deck has a unique card number.
+ */
+function createMystiqueCard(mystique_card_num, transform) {
     // Start off with a base card
     let newCard = createElement(
         "baseCard",
@@ -81,6 +87,7 @@ function createCard(index, transform) {
     const colors = ['yellow', 'red', 'blue'];
 
     // Determine what goes on this specific card
+    const index = mystique_card_num - 1; // Zero-index so math is easier
     const pip_index = Math.floor(index / ranks.length / colors.length);
     const rank_index = index % ranks.length;
     const color_index = Math.floor(index / ranks.length) % colors.length;
@@ -112,7 +119,7 @@ function createCard(index, transform) {
     svgindex.setAttribute("fill", "black");
     svgindex.setAttribute("font-family", "monospace");
     svgindex.setAttribute("font-size", "50%");
-    svgindex.innerHTML=index+1;
+    svgindex.innerHTML=mystique_card_num;
     newCard.appendChild(svgindex);
 
     return newCard;
@@ -148,17 +155,54 @@ function cardPositionGenerator(index) {
     return transform
 }
 
-function main() {
-    const max_cards = 11;
-    const start_at = 0; // The first card index on this page
-    for (let num = 0; num < max_cards; ++num) {
+/**
+ * Convert a print index to a mystique card number.
+ *
+ * Mystique card numbers have cards grouped by suit.
+ * When printing onto colored paper, it's more convenient to group by color.
+ *
+ * This function is overcomplicated nonsense. It would be much easier to just
+ * hard-code the print order, as I have done anyway in the tests!!
+ */
+function convert_print_index_to_card_num(print_index) {
+    // We want to group by color instead of suit
+    const times_we_jumped = Math.floor(print_index / 5);
+    const rank = print_index % 5;
+    const color = Math.floor(print_index / 20);
+    const result = (rank + (times_we_jumped * 3*5) + (color * 5)) % 60 + 1;
 
-        let newCard = createCard(
-            num + start_at,
+    return result;
+}
+function test_convert_print_index_to_card_num() {
+    const print_order = [1,2,3,4,5,16,17,18,19,20,31,32,33,34,35,46,47,48,49,50,6,7,8,9,10,21,22,23,24,25,36,37,38,39,40,51,52,53,54,55,11,12,13,14,15,26,27,28,29,30,41,42,43,44,45,56,57,58,59,60]
+
+    for (let num = 0; num < print_order.length; ++num) {
+        expected = print_order[num];
+        actual = convert_print_index_to_card_num(num);
+
+        if (expected == actual) {
+            console.log(num + ' -> ' + expected);
+        } else {
+            console.log(num + ' -> ' + expected, '(got ' + actual + ')');
+        }
+    }
+}
+
+function main() {
+    const cards_per_page = 11;
+    const page = 0;
+    const start_at = cards_per_page * page; // The first card index on this page
+
+    // Construct a page worth of cards
+    for (let num = 0; num < cards_per_page; ++num) {
+
+        let newCard = createMystiqueCard(
+            convert_print_index_to_card_num(num + start_at),
             cardPositionGenerator(num)
         )
         svg.appendChild(newCard);
     }
+
 }
 
 main();
