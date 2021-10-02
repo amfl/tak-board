@@ -147,10 +147,11 @@ function cardPositionGenerator(index) {
 
 function main() {
     const max_cards = 11;
+    const start_at = 0; // The first card index on this page
     for (let num = 0; num < max_cards; ++num) {
 
         let newCard = createCard(
-            num,
+            num + start_at,
             cardPositionGenerator(num)
         )
         svg.appendChild(newCard);
