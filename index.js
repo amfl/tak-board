@@ -95,6 +95,18 @@ function createMystiqueCard(mystique_card_num, transform) {
     const color_index = Math.floor(index / ranks.length) % colors.length;
 
     // Add stuff specific to this card
+
+    let innerRect = document.createElementNS(svgns, "rect");
+    const innerRectMargin = 14;
+    innerRect.setAttribute("x", innerRectMargin);
+    innerRect.setAttribute("y", innerRectMargin);
+    innerRect.setAttribute("width", cardDimensionsMm[0] - 2*innerRectMargin);
+    innerRect.setAttribute("height", cardDimensionsMm[1] - 2*innerRectMargin);
+    innerRect.setAttribute("fill", "none");
+    innerRect.setAttribute("stroke", "darkgrey");
+    innerRect.setAttribute("stroke-width", "0.5");
+    newCard.appendChild(innerRect);
+
     var corner_thing = document.createElementNS(svgns, "g");
     const corner_thing_id = "corner_" + mystique_card_num;
     corner_thing.setAttribute("id", corner_thing_id);
