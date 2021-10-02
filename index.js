@@ -82,6 +82,7 @@ function createMystiqueCard(mystique_card_num, transform) {
 
     // Describe the set of all cards
     // const pips = ['♠','♥','♦','♣'];
+    // Other candidate symbols: ☪☾  ♚♔
     const pips = ['☾','☀','⚜','♛'];
     const ranks = ['A', '2', '3', '4', '5'];
     // Note: Color is not printed on the card.
@@ -118,16 +119,16 @@ function createMystiqueCard(mystique_card_num, transform) {
     rank.setAttribute("y", "15");
     rank.setAttribute("fill", "black");
     rank.setAttribute("font-family", "monospace");
-    rank.setAttribute("font-size", "125%");
+    rank.setAttribute("font-size", "100%");
     rank.innerHTML=ranks[rank_index];
     corner_thing.appendChild(rank);
 
     var corner_pip = document.createElementNS(svgns, "text");
     corner_pip.setAttribute("text-anchor", "middle");
     corner_pip.setAttribute("x", "0");
-    corner_pip.setAttribute("y", "25");
+    corner_pip.setAttribute("y", "24");
     corner_pip.setAttribute("fill", "black");
-    corner_pip.setAttribute("font-size", "80%");
+    corner_pip.setAttribute("font-size", "90%");
     corner_pip.setAttribute("font-family", "monospace");
     corner_pip.innerHTML=pips[pip_index % pips.length];
     corner_thing.appendChild(corner_pip);
@@ -160,7 +161,7 @@ function createMystiqueCard(mystique_card_num, transform) {
     var svgindex = document.createElementNS(svgns, "text");
     svgindex.setAttribute("text-anchor", "middle");
     svgindex.setAttribute("x", cardDimensionsMm[0]/2);
-    svgindex.setAttribute("y", "10");
+    svgindex.setAttribute("y", "7");
     svgindex.setAttribute("fill", "black");
     svgindex.setAttribute("font-family", "monospace");
     svgindex.setAttribute("font-size", "40%");
