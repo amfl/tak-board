@@ -7,7 +7,7 @@ const numSquares = 4;      // Defines the dimensions of the entire board
 const diamondRadius = 20;  // How wide the diamonds are
 const separation = 8;      // Separation between diamonds and octagons
 
-const cardDimensionsMm = [57, 88]
+const cardDimensionsMm = [58, 90]
 const a4DimensionsMm = [210, 297]
 
 //////////////////////////////////////
