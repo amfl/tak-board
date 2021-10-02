@@ -75,7 +75,8 @@ function createCard(index, transform) {
     // Describe the set of all cards
     // const pips = ['♠','♥','♦','♣'];
     const pips = ['☀','☾','⚜','♛'];
-    const max_rank = 5;
+    const ranks = ['A', '2', '3', '4', '5'];
+    const max_rank = ranks.length;
 
     // Determine what goes on this specific card
     const pip_index = Math.floor(index / max_rank);
@@ -88,7 +89,7 @@ function createCard(index, transform) {
     text.setAttribute("fill", "black");
     text.setAttribute("font-family", "monospace");
     text.setAttribute("font-size", "200%");
-    text.innerHTML=rank_index;
+    text.innerHTML=ranks[rank_index];
     newCard.appendChild(text);
 
     var pip = document.createElementNS(svgns, "text");
