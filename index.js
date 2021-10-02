@@ -125,7 +125,7 @@ function createMystiqueCard(mystique_card_num, transform) {
     var rank = document.createElementNS(svgns, "text");
     rank.setAttribute("text-anchor", "middle");
     rank.setAttribute("x", "0");
-    rank.setAttribute("y", "15");
+    rank.setAttribute("y", "13");
     rank.setAttribute("fill", "black");
     rank.setAttribute("class", "rank corner number");
     rank.innerHTML=ranks[rank_index];
@@ -134,7 +134,7 @@ function createMystiqueCard(mystique_card_num, transform) {
     var corner_pip = document.createElementNS(svgns, "text");
     corner_pip.setAttribute("text-anchor", "middle");
     corner_pip.setAttribute("x", "0");
-    corner_pip.setAttribute("y", "24");
+    corner_pip.setAttribute("y", "22");
     corner_pip.setAttribute("fill", "black");
     corner_pip.setAttribute("class", "pip corner");
     corner_pip.innerHTML=pips[pip_index % pips.length];
@@ -167,7 +167,7 @@ function createMystiqueCard(mystique_card_num, transform) {
     var svgindex = document.createElementNS(svgns, "text");
     svgindex.setAttribute("text-anchor", "middle");
     svgindex.setAttribute("x", cardDimensionsMm[0]/2);
-    svgindex.setAttribute("y", "7");
+    svgindex.setAttribute("y", "9");
     svgindex.setAttribute("fill", "black");
     svgindex.setAttribute("class", "card_number number");
     svgindex.innerHTML=mystique_card_num;
