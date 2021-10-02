@@ -77,6 +77,8 @@ function createMystiqueCard(mystique_card_num, transform) {
         "baseCard",
         transform
     )
+    // Grab a ref to the definitions... We'll be referring to it later
+    const defs = document.querySelector("defs");
 
     // Describe the set of all cards
     // const pips = ['♠','♥','♦','♣'];
@@ -93,24 +95,55 @@ function createMystiqueCard(mystique_card_num, transform) {
     const color_index = Math.floor(index / ranks.length) % colors.length;
 
     // Add stuff specific to this card
+    var corner_thing = document.createElementNS(svgns, "g");
+    const corner_thing_id = "corner_" + mystique_card_num;
+    corner_thing.setAttribute("id", corner_thing_id);
+    defs.appendChild(corner_thing);
+
     var rank = document.createElementNS(svgns, "text");
+    rank.setAttribute("text-anchor", "middle");
     rank.setAttribute("x", "0");
-    rank.setAttribute("y", "20");
+    rank.setAttribute("y", "15");
     rank.setAttribute("fill", "black");
     rank.setAttribute("font-family", "monospace");
-    rank.setAttribute("font-size", "200%");
+    rank.setAttribute("font-size", "125%");
     rank.innerHTML=ranks[rank_index];
-    newCard.appendChild(rank);
+    corner_thing.appendChild(rank);
 
-    var pip = document.createElementNS(svgns, "text");
-    pip.setAttribute("text-anchor", "middle");
-    pip.setAttribute("x", cardDimensionsMm[0]/2);
-    pip.setAttribute("y", 3*cardDimensionsMm[1]/4);
-    pip.setAttribute("fill", "black");
-    pip.setAttribute("font-size", "500%");
-    pip.setAttribute("font-family", "monospace");
-    pip.innerHTML=pips[pip_index % pips.length];
-    newCard.appendChild(pip);
+    var corner_pip = document.createElementNS(svgns, "text");
+    corner_pip.setAttribute("text-anchor", "middle");
+    corner_pip.setAttribute("x", "0");
+    corner_pip.setAttribute("y", "25");
+    corner_pip.setAttribute("fill", "black");
+    corner_pip.setAttribute("font-size", "80%");
+    corner_pip.setAttribute("font-family", "monospace");
+    corner_pip.innerHTML=pips[pip_index % pips.length];
+    corner_thing.appendChild(corner_pip);
+
+    var top_thing = document.createElementNS(svgns, "g");
+    const thing_indent = 7;
+    top_thing.appendChild(createElement(corner_thing_id, 'translate(' + thing_indent + ', 0)'));
+    top_thing.appendChild(createElement(corner_thing_id, 'translate(' + (cardDimensionsMm[0] - thing_indent) + ', 0)'));
+    const top_thing_id = "top_" + mystique_card_num;
+    top_thing.setAttribute("id", top_thing_id);
+    defs.appendChild(top_thing);
+
+    newCard.appendChild(top_thing);
+    newCard.appendChild(createElement(top_thing_id, ''));
+    newCard.appendChild(createElement(top_thing_id,
+        'translate('+cardDimensionsMm[0]+', '+cardDimensionsMm[1]+') ' +
+        'rotate(180) '
+    ));
+
+    var center_pip = document.createElementNS(svgns, "text");
+    center_pip.setAttribute("text-anchor", "middle");
+    center_pip.setAttribute("x", cardDimensionsMm[0]/2);
+    center_pip.setAttribute("y", 3*cardDimensionsMm[1]/4);
+    center_pip.setAttribute("fill", "black");
+    center_pip.setAttribute("font-size", "500%");
+    center_pip.setAttribute("font-family", "monospace");
+    center_pip.innerHTML=pips[pip_index % pips.length];
+    newCard.appendChild(center_pip);
 
     var svgindex = document.createElementNS(svgns, "text");
     svgindex.setAttribute("text-anchor", "middle");
@@ -118,9 +151,9 @@ function createMystiqueCard(mystique_card_num, transform) {
     svgindex.setAttribute("y", "10");
     svgindex.setAttribute("fill", "black");
     svgindex.setAttribute("font-family", "monospace");
-    svgindex.setAttribute("font-size", "50%");
+    svgindex.setAttribute("font-size", "40%");
     svgindex.innerHTML=mystique_card_num;
-    newCard.appendChild(svgindex);
+    top_thing.appendChild(svgindex);
 
     return newCard;
 }
