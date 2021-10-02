@@ -83,14 +83,14 @@ function createCard(index, transform) {
     const rank_index = index % max_rank;
 
     // Add stuff specific to this card
-    var text = document.createElementNS(svgns, "text");
-    text.setAttribute("x", "0");
-    text.setAttribute("y", "20");
-    text.setAttribute("fill", "black");
-    text.setAttribute("font-family", "monospace");
-    text.setAttribute("font-size", "200%");
-    text.innerHTML=ranks[rank_index];
-    newCard.appendChild(text);
+    var rank = document.createElementNS(svgns, "text");
+    rank.setAttribute("x", "0");
+    rank.setAttribute("y", "20");
+    rank.setAttribute("fill", "black");
+    rank.setAttribute("font-family", "monospace");
+    rank.setAttribute("font-size", "200%");
+    rank.innerHTML=ranks[rank_index];
+    newCard.appendChild(rank);
 
     var pip = document.createElementNS(svgns, "text");
     pip.setAttribute("x", cardDimensionsMm[0]/3);
