@@ -2,19 +2,20 @@
 html { margin: 0 0; }
 body {
     margin: 5mm 0;
-    font-family: monospace;
+    /* font-family: monospace; */
 }
 
 .pip.center {
-    font-size: 500%;
+    font-size: 300%;
 }
 .pip.corner {
-    font-size: 90%;
+    font-size: 60%;
 }
 .number {
-    /* font-family: "Amaranth, monospace"; */
+    /* font-family: "Alef, regular"; */
+    font-family: "monospace";
 }
-.rank { font-size: 100%; }
+.rank { font-size: 80%; }
 .card_number {
-    font-size: 40%;
+    font-size: 25%;
 }

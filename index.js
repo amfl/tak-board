@@ -91,8 +91,8 @@ function createMystiqueCard(mystique_card_num, transform) {
 
     // Describe the set of all cards
     // const pips = ['♠','♥','♦','♣'];
-    // Other candidate symbols: ☪☾  ♚♔
-    const pips = ['☾','☀','⚜','♛'];
+    // Other candidate symbols: ☪☾  ♚♔  🌣☀☼  ♕♛
+    const pips = ['☾','☼','⚜','♕'];
     const ranks = ['A', '2', '3', '4', '5'];
     // Note: Color is not printed on the card.
     // It's expected that we will print on colored paper.
@@ -158,7 +158,7 @@ function createMystiqueCard(mystique_card_num, transform) {
     var center_pip = document.createElementNS(svgns, "text");
     center_pip.setAttribute("text-anchor", "middle");
     center_pip.setAttribute("x", cardDimensionsMm[0]/2);
-    center_pip.setAttribute("y", 3*cardDimensionsMm[1]/4);
+    center_pip.setAttribute("y", "60");
     center_pip.setAttribute("fill", "black");
     center_pip.setAttribute("class", "pip center");
     center_pip.innerHTML=pips[pip_index % pips.length];
