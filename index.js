@@ -74,13 +74,16 @@ function createCard(index, transform) {
 
     // Describe the set of all cards
     // const pips = ['♠','♥','♦','♣'];
-    const pips = ['☀','☾','⚜','♛'];
+    const pips = ['☾','☀','⚜','♛'];
     const ranks = ['A', '2', '3', '4', '5'];
-    const max_rank = ranks.length;
+    // Note: Color is not printed on the card.
+    // It's expected that we will print on colored paper.
+    const colors = ['yellow', 'red', 'blue'];
 
     // Determine what goes on this specific card
-    const pip_index = Math.floor(index / max_rank);
-    const rank_index = index % max_rank;
+    const pip_index = Math.floor(index / ranks.length / colors.length);
+    const rank_index = index % ranks.length;
+    const color_index = Math.floor(index / ranks.length) % colors.length;
 
     // Add stuff specific to this card
     var rank = document.createElementNS(svgns, "text");
