@@ -93,10 +93,11 @@ function createCard(index, transform) {
     newCard.appendChild(rank);
 
     var pip = document.createElementNS(svgns, "text");
-    pip.setAttribute("x", cardDimensionsMm[0]/3);
-    pip.setAttribute("y", 2*cardDimensionsMm[1]/3);
+    pip.setAttribute("text-anchor", "middle");
+    pip.setAttribute("x", cardDimensionsMm[0]/2);
+    pip.setAttribute("y", 3*cardDimensionsMm[1]/4);
     pip.setAttribute("fill", "black");
-    pip.setAttribute("font-size", "400%");
+    pip.setAttribute("font-size", "500%");
     pip.setAttribute("font-family", "monospace");
     pip.innerHTML=pips[pip_index % pips.length];
     newCard.appendChild(pip);
