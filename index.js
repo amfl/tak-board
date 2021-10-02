@@ -74,7 +74,7 @@ function createCard(index, transform) {
 
     // Describe the set of all cards
     // const pips = ['♠','♥','♦','♣'];
-    const pips = ['♠','♦','♣'];
+    const pips = ['☀','☾','⚜','♛'];
     const max_rank = 5;
 
     // Determine what goes on this specific card
