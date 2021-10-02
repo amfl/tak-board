@@ -69,7 +69,7 @@ function createCard(index, transform) {
     // Start off with a base card
     let newCard = createElement(
         "baseCard",
-        cardPositionGenerator(index)
+        transform
     )
 
     // Describe the set of all cards
