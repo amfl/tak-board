@@ -10,6 +10,15 @@ const separation = 8;      // Separation between diamonds and octagons
 const cardDimensionsMm = [58, 90]
 const a4DimensionsMm = [210, 297]
 
+let card_order = convert_print_index_to_card_num
+let card_border_color = 'lightgrey'
+
+const debug = true
+if (debug) {
+    card_order = convert_print_index_to_debug_num
+    card_border_color = 'black' // Makes it easier to cut
+}
+
 //////////////////////////////////////
 // SET UP THE SVG CANVAS
 //////////////////////////////////////
@@ -39,7 +48,7 @@ baseCard.setAttribute("id", "baseCard");
 baseCard.setAttribute("width", cardDimensionsMm[0]);
 baseCard.setAttribute("height", cardDimensionsMm[1]);
 baseCard.setAttribute("fill", "none");
-baseCard.setAttribute("stroke", "lightgrey");
+baseCard.setAttribute("stroke", card_border_color);
 baseCard.setAttribute("stroke-width", "0.5");
 
 // Append these basic shapes into the SVG defs section so we can refer to them later.
@@ -202,7 +211,8 @@ function cardPositionGenerator(index) {
 }
 
 /**
- * Convert a print index to a mystique card number.
+ * Convert a print index to a mystique card number. Determines the order of the
+ * cards on the page.
  *
  * Mystique card numbers have cards grouped by suit.
  * When printing onto colored paper, it's more convenient to group by color.
@@ -234,6 +244,17 @@ function test_convert_print_index_to_card_num() {
     }
 }
 
+/**
+ * Convert a print index to a mystique card number. Determines the order of the
+ * cards on the page.
+ *
+ * When making design tweaks, it's useful to scramble it up so we get a good
+ * sampling of suits.
+ */
+function convert_print_index_to_debug_num(print_index) {
+    return ((print_index * 13) % 60) + 1
+}
+
 function main() {
     const cards_per_page = 10;
     const page = 0;
@@ -243,12 +264,11 @@ function main() {
     for (let num = 0; num < cards_per_page; ++num) {
 
         let newCard = createMystiqueCard(
-            convert_print_index_to_card_num(num + start_at),
-            cardPositionGenerator(num)
+            card_order(num + start_at),  // Which card are drawing now?
+            cardPositionGenerator(num)   // Where does the card go on the page?
         )
         svg.appendChild(newCard);
     }
-
 }
 
 main();
