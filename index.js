@@ -189,7 +189,7 @@ function test_convert_print_index_to_card_num() {
 }
 
 function main() {
-    const cards_per_page = 11;
+    const cards_per_page = 10;
     const page = 0;
     const start_at = cards_per_page * page; // The first card index on this page
 
